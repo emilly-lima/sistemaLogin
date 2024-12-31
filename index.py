@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
+import database
 
 janela = Tk()
 janela.title("Login Acess")
@@ -57,7 +58,19 @@ def Register():
     EmailEntry = ttk.Entry(RightFrame, width=20, font=("Calibri", 12))
     EmailEntry.place(x=130, y=105)
 
-    Register = ttk.Button(RightFrame, text="Register", width=20)
+    def RegisterDatabase():
+        Name = NomeEntry.get()
+        Email = EmailEntry.get()
+        Username = UserEntry.get()
+        Password = PassEntry.get()
+
+        database.cursor.execute("""
+            INSERT INTO users (Name, Email, Username, Password) VALUES (?, ?, ?, ?)
+        """, (Name, Email, Username, Password))
+        database.connection.commit()
+        messagebox.showinfo(title="Register Info", message="Account Created Successfully")
+
+    Register = ttk.Button(RightFrame, text="Register", width=20, command=RegisterDatabase)
     Register.place(x=145, y=250)
 
     def BackLogin():
