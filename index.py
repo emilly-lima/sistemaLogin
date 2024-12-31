@@ -33,7 +33,30 @@ PassLabel.place(x=10, y=150)
 PassEntry = ttk.Entry(RightFrame, width=20, show="*", font=("Calibri", 12))
 PassEntry.place(x=130, y=155)
 
-ButtonLogin = ttk.Button(RightFrame, text="Login", width=20)
+def LoginDatabase():
+        User = UserEntry.get()
+        Pass = PassEntry.get()
+
+        database.cursor.execute("""
+            SELECT * from Users
+            WHERE (Username = ? and Password = ?)                    
+            """, (User, Pass))
+        print("Select executed")
+
+        verifyLogin = database.cursor.fetchone()
+
+        try:
+            if (User in verifyLogin and Pass in verifyLogin):
+                messagebox.showinfo(title="Login Info", message="Access Granted")
+            
+            elif(User == "" or Pass == ""):
+                messagebox.showerror(title="Register Error", message="Please fill all the fields")
+       
+        except:
+            messagebox.showerror(title="Login Error", message="Access Denied")
+        
+
+ButtonLogin = ttk.Button(RightFrame, text="Login", width=20, command=LoginDatabase)
 ButtonLogin.place(x=145, y=200)
 
 def Register():
