@@ -64,11 +64,14 @@ def Register():
         Username = UserEntry.get()
         Password = PassEntry.get()
 
-        database.cursor.execute("""
-            INSERT INTO users (Name, Email, Username, Password) VALUES (?, ?, ?, ?)
-        """, (Name, Email, Username, Password))
-        database.connection.commit()
-        messagebox.showinfo(title="Register Info", message="Account Created Successfully")
+        if(Name == "" or Email == "" or Username == "" or Password == ""):
+            messagebox.showerror(title="Register Error", message="Please fill all the fields")
+        else:
+            database.cursor.execute("""
+                INSERT INTO users (Name, Email, Username, Password) VALUES (?, ?, ?, ?)
+            """, (Name, Email, Username, Password))
+            database.connection.commit()
+            messagebox.showinfo(title="Register Info", message="Account Created Successfully")
 
     Register = ttk.Button(RightFrame, text="Register", width=20, command=RegisterDatabase)
     Register.place(x=145, y=250)
@@ -97,7 +100,6 @@ def Register():
 
 ButtonRegister = ttk.Button(RightFrame, text="Register", width=20, command=Register)
 ButtonRegister.place(x=145, y=230)
-
 
 
 janela.mainloop()
